@@ -14,7 +14,7 @@ export async function getMusicById(req, res) {
                     )
                 ) AS playlist_obj
             ) AS playlists
-            FROM Musics m WHERE m.ms_id = $1`,
+            FROM musics m WHERE m.ms_id = $1`,
             values: [req.params.id]
         });
 
@@ -30,7 +30,7 @@ export async function deleteMusic(req, res) {
     console.log(`DELETE /musics/${req.params.id} is requested`);
 
     await database.query({
-        text: `DELETE FROM "Musics" WHERE "ms_id" = $1`,
+        text: `DELETE FROM "musics" WHERE "ms_id" = $1`,
         values: [req.params.id]
     });
     res.status(204).end();
@@ -41,7 +41,7 @@ export async function putMusic(req, res) {
     const bodyData = req.body;
 
     await database.query({
-        text: `UPDATE "Musics" 
+        text: `UPDATE "musics" 
                SET "ms_name" = $1,
                    "ms_album" = $2,
                    "ms_type" = $3,
@@ -83,7 +83,7 @@ export async function postMusic(req, res) {
         }
 
         const result = await database.query({
-            text: `INSERT INTO Musics ("ms_name", "ms_album", "ms_type", "ms_duration", "ms_path")
+            text: `INSERT INTO musics ("ms_name", "ms_album", "ms_type", "ms_duration", "ms_path")
                    VALUES ($1, $2, $3, $4, $5) RETURNING ms_id`,
             values: [
                 req.body.ms_name,
@@ -102,14 +102,14 @@ export async function postMusic(req, res) {
 }
 
 export async function getSearchMusic(req, res) {
-    console.log(`GET /search/musics/${req.params.id} is requested`);
+    console.log(`GET /search/musics/${req.params.name} is requested`);
     try {
         const result = await database.query({
             text: `
-            SELECT * FROM Musics 
+            SELECT * FROM musics 
             WHERE ms_name ILIKE $1
             LIMIT 3`,
-            values: [`%${req.params.id}%`]
+            values: [`%${req.params.name}%`]
         });
 
         return res.status(200).json(result.rows);

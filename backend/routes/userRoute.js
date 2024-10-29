@@ -1,12 +1,12 @@
 import express from "express"
-// ตรง{}คือการimport getAllmember
+
 import * as userC from "../controllers/userController.js"
 
 const router =express.Router()
-router.get('/users/logout',userC.logoutMember)
+router.get('/users/logout',userC.logoutUser)
 router.get('/users/getss',userC.getSession)
-router.post('/users',userC.postMember)
-router.post('/users/login',userC.LoginMember)
-router.post('/users/uploadImg',userC.uploadMember)
+router.post('/users',userC.postUser)
+router.post('/users/login',userC.loginUser)
+router.post('/users/uploadImg',userC.uploadUser)
 
 export default router
