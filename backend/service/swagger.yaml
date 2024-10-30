@@ -1,131 +1,92 @@
 openapi: 3.0.0
 info:
-  title: KUSHOP API
-  description: KUSHOP Project from Kasetsart University Sriracha Campus.
+  title: Music Player
+  description: API สำหรับโปรเจค Music Player
   version: 0.1
 servers:
   - url: http://localhost:3000/
-    # description: My Localhost
+    description: My Localhost
 paths:
-  /products:
-    # GET All Product
+  /users:
+    # GET All Users
     get:
-      summary: Returns a list all of products.
-      # สามารถอธิบายรายละเอียดได้
-      # เครื่องหมาย |
+      summary: Returns a list of all users.
       description: |
-        List all products in array of object format.<br>
-        Each product contains details like product ID, name, price, etc.
-      # ส่วนอธิบายว่าจะส่ง Status Cose อะไรกลับไปบ้าง
+        แสดงรายชื่อผู้ใช้ทั้งหมดในรูปแบบอาเรย์ของออบเจ็กต์<br>
+        ผู้ใช้แต่ละคนจะประกอบด้วยข้อมูล เช่น ID, ชื่อ, อีเมล เป็นต้น
       responses:
-        '200':    # status code
-          description: A JSON array of Products
+        '200':
+          description: A JSON array of users
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  # อ้างอิงไปที่ Component เพื่อแสดงรายละเอียด
-                  $ref: '#/components/schemas/products' 
-    # POST new product
+                  $ref: '#/components/schemas/user'
+    # POST new user
     post:
-      summary: Creates a new Product.
+      summary: Creates a new user.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/new_product'   #component for create
+              $ref: '#/components/schemas/new_user'   # component for create
       responses:
         '201':
-          description: Product is created.
+          description: User is created.
         '409':
-          description: Product ID is existes.
+          description: User ID already exists.
         '500':
-          description: Server Error
+          description: Server error.
 
-  /products/{id}:
-    # GET Product by ID
+  /users/{id}:
+    # GET User by ID
     get:
-      summary: Returns the specify products.
-      # สามารถอธิบายรายละเอียดได้
-      # เครื่องหมาย |
+      summary: Returns the specified user.
       description: |
-        Show a products in array of object format
-      # ส่วนกำหนด Parameter
+        แสดงข้อมูลผู้ใช้ในรูปแบบอาเรย์ของออบเจ็กต์
       parameters:
         - name: id
           in: path
           required: true
-          description: Product ID
+          description: User ID
           schema:
-            type : string
-      # ส่วนอธิบายว่าจะส่ง Status Cose อะไรกลับไปบ้าง
+            type: string
       responses:
-        '200':    # status code
-          description: A JSON array of Products
+        '200':
+          description: A JSON object representing the user
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  # อ้างอิงไปที่ Component เพื่อแสดงรายละเอียด
-                  $ref: '#/components/schemas/products'
-        '404':    # status code
-          description: A product with the specified ID was not found.
-        '500':    # status code
+                $ref: '#/components/schemas/user'
+        '404':
+          description: A user with the specified ID was not found.
+        '500':
           description: Server error.
-# กำหนด Component ที่ต้องการแสดงรายละเอียด
+
 components:
   schemas:
-    products:
+    user:
       type: object
       properties:
-        pd_id:
+        user_id:
           type: string
-        pd_name:
+        user_name:
           type: string
-        pd_price:
-          # integer , number
-          type: number
-        pd_remark:
+        user_email:
           type: string
-        pd_typeid:
+        user_password:
           type: string
-        brand_id:
+        created_at:
           type: string
-        brand:
-          $ref: '#/components/schemas/brands'
-        pdt:
-          $ref: '#/components/schemas/productType'
-    brands:
+          format: date-time
+    new_user:
       type: object
       properties:
-        brand_id:
+        user_name:
           type: string
-        brand_name:
-          type: string 
-    productType:
-      type: object
-      properties:
-        pdTypeId:
+        user_email:
           type: string
-        pdTypeName:
-          type: string
-    # Component สำหรับ POST
-    new_product:
-      type: object
-      properties:
-        pd_id:
-          type: string
-        pd_name:
-          type: string
-        pd_price:
-          # integer , number
-          type: number
-        pd_remark:
-          type: string
-        pd_typeid:
-          type: string
-        brand_id:
+        user_password:
           type: string
