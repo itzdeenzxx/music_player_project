@@ -1,0 +1,75 @@
+<template>
+  <div v-if="item.type !== 'stations'" class="artwork-title-container">
+    <div class="buttons">
+      <div class="button-svg" @click="playItem">
+        <font-awesome-icon icon="play" class="icon " style="color: #dddddd" size="1x" />
+      </div>
+    </div>
+
+    <div
+      @click="$router.push({ name: type, params: { id: item.id } })"
+      class="thumbnail-and-title icon-buttons"
+      :class="{ 'explicit-content-album': isExplicit }"
+    >
+      <div
+        class="artwork"
+        :style="{ backgroundImage: `url('${getArtwork(item.attributes.artwork, 120)}')` }"
+      ></div>
+
+      <div class="info">
+        <router-link
+          class="album-title "
+          :to="{ name: type, params: { id: item.id } }"
+          :title="item.attributes.name"
+        >
+          {{ item.attributes.name }}
+        </router-link>
+        <div class="album-artist">
+          <p
+            v-if="getSafe(() => item.attributes.artistName, false)"
+            class="sub-text"
+            :title="getSafe(() => item.attributes.artistName, '')"
+          >
+            {{ getSafe(() => item.attributes.artistName, '') }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapActions } from 'vuex';
+import helpers from '@/store/helpers';
+
+export default {
+  name: 'artwork-and-title',
+  props: {
+    item: Object,
+    type: String,
+  },
+  data() {
+    return {
+      optionsVisible: false,
+    };
+  },
+  methods: {
+    ...mapActions('player', {
+      play: 'play',
+    }),
+    getArtwork: helpers.getUrl,
+    getSafe: helpers.getSafe,
+    setQueue: helpers.setQueue,
+
+    async playItem() {
+      await this.setQueue(this.item.attributes.playParams);
+      this.play();
+    },
+  },
+  computed: {
+    isExplicit() {
+      return this.getSafe(() => this.item.attributes.contentRating === 'explicit', false);
+    },
+  },
+};
+</script>

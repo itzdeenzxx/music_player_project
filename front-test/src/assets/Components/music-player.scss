@@ -1,0 +1,126 @@
+$top-border-color: $card-background-color;
+$player-background-color: #cf6679;
+$player-height: 280px;
+$image-width-height: 100px;
+
+.player {
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: flex-start;
+  height: $player-height;
+  margin-top: auto;
+  background-color: $player-background-color;
+  border-color: $top-border-color;
+  width: $sidebar-width;
+  overflow: hidden;
+  .title {
+    font-weight: bold !important;
+  }
+  .info {
+    color: #282828 !important;
+  }
+  .image-and-titles {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 10px;
+    img {
+      display: block;
+      height: $image-width-height;
+      width: $image-width-height;
+      border-radius: 6px;
+      box-shadow: $artwork-box-shadow;
+    }
+    &__label-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+      min-height: 56px;
+      width: 50%;
+      margin-left: 8px;
+      .link-color-text {
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 14px;
+      }
+    }
+  }
+  .play-status {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 1em 10px 0;
+    min-height: 44px;
+    width: 85%;
+    .scrubber {
+      width: $sidebar-width - 10px;
+    }
+    .play-time-labels {
+      margin: 6px 0 0 0;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+.play-pause-skip-controls {
+  box-sizing: border-box;
+  display: flex;
+  align-self: center;
+  flex-shrink: 0;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 0 1em;
+  height: 36px;
+
+  &__icons {
+    flex-shrink: 0;
+    @include transition-animation(0.1);
+    &:hover {
+      transform: scale(1.2);
+      stroke: $owl-pink-dark;
+    }
+    &:active {
+      transform: scale(0.6);
+    }
+  }
+}
+
+.player-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 20px;
+}
+
+.volume-slider {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 130px;
+  background: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  bottom: 0;
+  left: -10px;
+  z-index: 10;
+  border-radius: 10px;
+}
+
+.repeat-one {
+  font-size: 13px;
+  font-weight: bold;
+  position: absolute;
+  top: -27%;
+  // lol
+  left: 69%;
+}

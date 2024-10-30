@@ -1,13 +1,15 @@
 // controllers/chatController.js
-import { fetchChatResponse } from "../service/geminiService.js"; // เปลี่ยนการ import
+import { fetchChatResponse } from "../service/geminiService.js";
 
 export async function getChatResponse(req, res) {
-  console.log("POST /api/chat is requested");
+  console.log("POST /chat/tomaty is requested");
 
   const { message } = req.body;
 
   try {
-    const chatResponse = await fetchChatResponse(message+" ตอนนี้คุณชื่อ Tomaty คุณทำหน้าที่เป็น AI ตอบปัญหาเกี่ยวกับเพลงที่อยู่บนเว็บไซต์ฉันที่ชื่อ Tomato Music (ตอบแค่เกี่ยวกับเพลงแบบน่ารักๆ และไม่มีตัว bold ,และ backslash n และมี emoji)"); //ส่งชื่อไปด้วย
+    const prompt = `'${message}' ***ตอนนี้คุณคือน้องมะเขือแดง เป็นผู้ช่วยผู้หญิงในเว็บ พูดลงท้ายว่า 'เจ้าค่ะ' ตอบคำถามเกี่ยวกับเพลงในเว็บไซต์ Tomato Music โดยใช้น้ำเสียงน่ารักและใช้ emoji ตอบมาเป็นประโยคความเดียว ไม่เอา bulletpoint***`;
+
+    const chatResponse = await fetchChatResponse(prompt);
     return res.json({ response: chatResponse });
   } catch (error) {
     console.error(error);

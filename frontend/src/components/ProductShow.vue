@@ -1,36 +1,39 @@
 <template>
-    <div v-for="(pd, pd_id) in products" :key="pd_id" class="mt-5">
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <div class="card mx-auto" style="width: 18rem">
-                    <img :src="`http://localhost:3000/img_pd/${pd.pd_id}.jpg`" alt="">
+    <div>
+
+        <div v-for="(pd, pd_id) in products" :key="pd_id" class="mt-5">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="card mx-auto" style="width: 18rem">
+                        <img :src="`http://localhost:3000/img_pd/${pd.pd_id}.jpg`" alt="">
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <table class="table">
-                    <tr class="table-secondary">
-                        <td><h4>{{ pd.pd_id }}</h4></td>
-                        <td><h4>{{ pd.pd_name }}</h4></td>
-                    </tr>
-                    <tr>
-                        <td><h5>ราคา</h5></td>
-                        <td><h5>{{ pd.pd_price }}</h5></td>
-                    </tr>
-                    <tr>
-                        <td><h5>ยี่ห้อ</h5></td>
-                        <td><h5>{{ pd.thebrand.brand_name }}</h5></td>
-                    </tr>
-                    <tr>
-                        <td><h5>รายละเอียด</h5></td>
-                        <td><h5>{{ pd.pd_remark }}</h5></td>
-                    </tr>
-                </table>
-                <button class="btn btn-primary" @click="chkLogin">
-                    <i class="bi bi-cart lead"></i> ใส่ตะกร้า&nbsp;
-                </button>
-                <button class="btn btn-warning float-end">
-                    <i class="bi bi-pencil-fill lead"></i> แก้ไข&nbsp;&nbsp;
-                </button>
+                <div class="col-md-6 col-sm-12">
+                    <table class="table">
+                        <tr class="table-secondary">
+                            <td><h4>{{ pd.pd_id }}</h4></td>
+                            <td><h4>{{ pd.pd_name }}</h4></td>
+                        </tr>
+                        <tr>
+                            <td><h5>ราคา</h5></td>
+                            <td><h5>{{ pd.pd_price }}</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>ยี่ห้อ</h5></td>
+                            <td><h5>{{ pd.thebrand.brand_name }}</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>รายละเอียด</h5></td>
+                            <td><h5>{{ pd.pd_remark }}</h5></td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-primary" @click="chkLogin">
+                        <i class="bi bi-cart lead"></i> ใส่ตะกร้า&nbsp;
+                    </button>
+                    <button class="btn btn-warning float-end">
+                        <i class="bi bi-pencil-fill lead"></i> แก้ไข&nbsp;&nbsp;
+                    </button>
+                </div>
             </div>
         </div>
     </div>

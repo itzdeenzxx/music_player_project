@@ -1,0 +1,139 @@
+@import '../constants';
+$card-background-color: #282828;
+$artwork-width: 100px;
+$artwork-height: $artwork-width;
+$card-width: 95px;
+$card-height: 140px;
+$artwork-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+$album-button-color: $owl-pink-dark;
+
+a,
+button,
+.info,
+.thumbnail-and-title {
+  @include transition-animation(0.2);
+  flex-shrink: 0;
+}
+
+.artwork-title-container {
+  position: relative;
+  &:hover {
+    .buttons {
+      display: block;
+    }
+    .info {
+      color: white;
+      .album-artist {
+        color: white;
+      }
+    }
+    .thumbnail-and-title {
+      transform: scale(1.05);
+      box-shadow: 0 17px 20px -6px rgba(36, 52, 70, 0.2);
+    }
+    cursor: pointer;
+  }
+}
+.buttons {
+  @include transition-animation(0.2);
+  display: none;
+  overflow: hidden;
+  position: absolute;
+  top: 12%;
+  right: 14%;
+  z-index: 2;
+  margin: 0;
+  background: transparent;
+  .button-svg {
+    background: $primary-color;
+    stroke: darken(white, 10%);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1px 0 2px 2px;
+  }
+  &:hover {
+    transform: scale(1.12);
+  }
+  &:active {
+    transform: scale(0.8);
+  }
+}
+.thumbnail-and-title {
+  overflow: hidden;
+  box-sizing: content-box;
+  background-color: $card-background-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  border-radius: 8px;
+  padding: 20px;
+  width: $card-width;
+  height: $card-height;
+  flex-shrink: 0;
+
+  .artwork {
+    @include bg-image-center;
+    box-shadow: $artwork-box-shadow;
+    flex-shrink: 0;
+    width: $artwork-width;
+    height: $artwork-height;
+    align-self: center;
+    position: relative;
+  }
+
+  &:hover {
+  }
+
+  .info {
+    a,
+    p {
+      padding: 0;
+      margin: 0;
+    }
+    margin-top: 10px;
+    border-radius: 0 0 10px 10px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    a {
+      text-decoration: none;
+      color: white;
+    }
+    .album-title {
+      @include truncate-text;
+      font-size: $regular-font-size;
+    }
+    .album-artist {
+      font-size: $tiny-font-size;
+      height: 15px;
+      @include truncate-text;
+      .sub-text {
+        color: $sub-text-color;
+      }
+    }
+  }
+}
+
+.explicit-content-album {
+  position: relative;
+}
+.explicit-content-album::after {
+  position: absolute;
+  content: 'E';
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 5px;
+  background-color: hsl(0, 0%, 29%);
+  margin-left: 6px;
+  border-radius: 2px;
+  bottom: 68px;
+  right: 22px;
+}
