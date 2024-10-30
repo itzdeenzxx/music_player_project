@@ -77,3 +77,22 @@ export async function getFavorites(req, res) {
         return res.status(500).json({ error: err.message });
     }
 }
+export async function getFavByUser(req, res) {
+    console.log(`GET Fav By User is Requested`);
+    try {
+        const result = await database.query({
+            text: `SELECT ROW_NUMBER() OVER (ORDER BY f."favId" DESC) AS row_number, f.*, SUM(fdt.qty) AS sqty, SUM(fdt.price * fdt.qty) AS sprice
+                   FROM favs f LEFT JOIN "favDtl" fdt ON f."favId" = fdt."favId"
+                   WHERE f."userId" = $1
+                   GROUP BY f."favId"
+                   ORDER BY f."favId" DESC`,
+            values: [req.body.id]
+        });
+        console.log(`id=${req.params.id} \n` + result.rows[0]);
+        return res.status(200).json(result.rows);
+    } catch (err) {
+        return res.status(500).json({
+            error: err.message
+        });
+    }
+}
