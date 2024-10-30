@@ -4,7 +4,7 @@
             <form @submit.prevent="handleSubmit()">
                 <div class="card row mt-5 " style="background-color: #EEFFEE;">
                     <div class="card-body">
-                        <h1 class="card-title text-secondary ">ลงทะเบียนสมาชิกใหม่</h1>
+                        <h1 class="card-title text-secondary ">Register</h1>
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="memEmail"
@@ -15,8 +15,8 @@
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="memName"  
-                                autocomplete="off" required placeholder="ชื่อ" v-model.trim="memName">
-                                <label for="memName">ชื่อ</label>
+                                autocomplete="off" required placeholder="Name" v-model.trim="memName">
+                                <label for="memName">Name</label>
                             </div>
                         </div>
                         <div class="col-lg-12 mb-3">
