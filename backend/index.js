@@ -24,7 +24,7 @@ const app = express()
 const port = process.env.port
 
 app.use(bodyParser.json())
-app.use("/api", chatRoutes);
+app.use("/chat", chatRoutes);
 app.use("/img_pd",express.static("img_pd"))
 app.use("/img_mem",express.static("img_mem"))
 

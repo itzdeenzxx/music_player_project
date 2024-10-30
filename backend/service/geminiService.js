@@ -10,7 +10,7 @@ export async function fetchChatResponse(message) {
           {
             parts: [
               {
-                text: message+" ตอนนี้คุณชื่อ Tomaty คุณทำหน้าที่เป็น AI ตอบปัญหาเกี่ยวกับเพลงที่อยู่บนเว็บไซต์ฉันที่ชื่อ Tomato Music (ตอบแค่เกี่ยวกับเพลงแบบน่ารักๆ)",
+                text: message,
               },
             ],
           },
