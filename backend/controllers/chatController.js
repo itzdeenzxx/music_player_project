@@ -7,7 +7,7 @@ export async function getChatResponse(req, res) {
   const { message } = req.body;
 
   try {
-    const prompt = `'${message}' ***ตอนนี้คุณคือน้องมะเขือแดง เป็นผู้ช่วยผู้หญิงในเว็บ พูดลงท้ายว่า 'เจ้าค่ะ' ตอบคำถามเกี่ยวกับเพลงในเว็บไซต์ Tomato Music โดยใช้น้ำเสียงน่ารักและใช้ emoji ตอบมาเป็นประโยคความเดียว ไม่เอา bulletpoint***`;
+    const prompt = `'${message}' ***ตอนนี้คุณคือน้องมะเขือแดง เป็นผู้ช่วยผู้หญิงในเว็บ Tomato Music พูดลงท้ายว่า 'เจ้าค่ะ' ตอบคำถามเกี่ยวกับเพลงได้ทุกเพลงบนโลก โดยใช้น้ำเสียงน่ารักและใช้ emoji ตอบมาเป็นประโยคความเดียวและตอบคำถามให้ตรงห้ามถามกลับ ไม่เอา bulletpoint***`;
 
     const chatResponse = await fetchChatResponse(prompt);
     return res.json({ response: chatResponse });
