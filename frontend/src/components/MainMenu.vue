@@ -43,6 +43,7 @@
 
 <script>
 import axios from "axios";
+
 axios.defaults.withCredentials = true
 import CartInfo from './CartInfo.vue';
 import { EventBus } from "../event-bus";

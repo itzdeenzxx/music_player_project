@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="row">
         <div class="col-lg-9 h1">My Product</div>
         <div class="col-lg-2 text-end">
@@ -7,6 +8,9 @@
         <div class="col">
             <button class="btn btn-primary" @click="searchProduct()">Search</button>
         </div>
+    </div>
+    <div class="chat">
+        <TomatyComponent />
     </div>
     <div class="row">
         <div v-for="(pd, pd_id) in products" :key="pd_id" class="col-lg-4 col-ml-6 col-sm-12">
@@ -24,13 +28,16 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
 import axios from "axios"
+import TomatyComponent from './TomatyComponent.vue'
 axios.defaults.withCredentials = true
 export default {
     name: "PageProduct",
+    components : { TomatyComponent } ,
     data() {
         return {
             products: [],
@@ -69,6 +76,9 @@ export default {
 
 <style>
 /* เพิ่มเงาเมื่อเลื่อนเมาส์เหนือการ์ด */
+.chat {
+    position: absolute;
+}
 .card:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
