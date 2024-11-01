@@ -1,7 +1,7 @@
 <template>
   <div class="row mt-5">
     <div class="col-sm-12 col-md-6 col-lg-6 mb-5">
-      <img src="../assets/tomato logo.png" alt="" wIdth="80%">
+      <img src="../assets/tomato.png" alt="" wIdth="80%">
     </div>
     <div class="col-sm-12 col-md-6 col-lg-6 mb3">
       <!-- เมื่อสั่ง Submit ให้เรียก Function handleSubmit -->
@@ -110,7 +110,7 @@ export default {
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #F7eded;
+  background-color: #F7EDED;
   /* Light background color */
   color: #333;
 }
@@ -188,7 +188,7 @@ body {
   left: 0;
   display: block;
   border-radius: 50px;
-  background: #a4daa0;
+  background: #A4DAA0;
   width: 45px;
   height: 45px;
   transition: all 0.3s ease;
@@ -219,7 +219,7 @@ body {
 
 .cta:hover:before {
   width: 100%;
-  background: #ea9c9c;
+  background: #EA9C9C;
 }
 
 .cta:hover svg {
