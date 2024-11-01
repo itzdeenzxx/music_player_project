@@ -18,14 +18,9 @@ const { Pool } = pkg;
 dotenv.config();
 
 const app = express();
-const port = process.env.port;
+const port = process.env.port || 3000; // Provide default port if not specified in env
 
 app.use(bodyParser.json());
-app.use("/chat",cors(), chatRoutes);
-app.use("/img_pd", express.static("img_pd"));
-app.use("/img_mem", express.static("img_mem"));
-
-const thesecret = process.env.secret;
 
 app.use(cors({
     origin: 'http://localhost:8080',
@@ -33,28 +28,37 @@ app.use(cors({
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.options('*', cors()); // ให้การตอบสนองต่อ OPTIONS สำหรับทุกเส้นทาง
 
+// Static file serving
+app.use("/img_pd", express.static("img_pd"));
+app.use("/img_mem", express.static("img_mem"));
+
+// Session setup
+const thesecret = process.env.secret;
 app.use(session({
     secret: thesecret,
     resave: false,
     saveUninitialized: true
 }));
 
+// Route configurations
+app.use("/chat", chatRoutes);
 app.use(productRoute);
 app.use(memberRoute);
 app.use(cartRoute);
 
-// swagger
+// Swagger setup
 const swaggerfile = fs.readFileSync('service/swagger.yaml', 'utf-8');
 const swaggerDoc = yaml.parse(swaggerfile);
 app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
+// Root route
 app.get(`/`, (req, res) => {
     console.log(`get / requested`);
     res.status(200).json({ message: "Request OK" });
 });
 
+// Start server
 app.listen(port, () => {
-    console.log(`server is running on port:${port}`);
+    console.log(`Server is running on port:${port}`);
 });

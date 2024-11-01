@@ -2,15 +2,16 @@
   <div>
 <div id="body"> 
   
-<div id="chat-circle" class="btn btn-raised">
-        <div id="chat-overlay"></div>
-        <i class="material-icons">speaker_phone</i>
+  <div id="chat-circle" class="btn btn-raised">
+  <img width="50" height="50" src="https://img.icons8.com/fluency/48/tomato.png" alt="tomato" />
+        <div id="chat-overlay">
+        </div>
   </div>
   
   <div class="chat-box">
     <div class="chat-box-header">
-      ChatBot
-      <span class="chat-box-toggle"><i class="material-icons">close</i></span>
+      Tomaty มะเขือแดง
+      <span class="chat-box-toggle"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M15.1 3.1L12.9.9L8 5.9L3.1.9L.9 3.1l5 4.9l-5 4.9l2.2 2.2l4.9-5l4.9 5l2.2-2.2l-5-4.9z"/></svg></span>
     </div>
     <div class="chat-box-body">
       <div class="chat-box-overlay">   
@@ -21,8 +22,8 @@
     </div>
     <div class="chat-input">      
       <form>
-        <input type="text" id="chat-input" placeholder="Send a message..."/>
-      <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons">send</i></button>
+        <input type="text" id="chat-input" placeholder="ส่งคำถามถึงน้องมะเขือ..."/>
+      <button type="submit" class="chat-submit" id="chat-submit"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M2.345 2.245a1 1 0 0 1 1.102-.14l18 9a1 1 0 0 1 0 1.79l-18 9a1 1 0 0 1-1.396-1.211L4.613 13H10a1 1 0 1 0 0-2H4.613L2.05 3.316a1 1 0 0 1 .294-1.071z" clip-rule="evenodd"/></svg></button>
       </form>      
     </div>
   </div>
@@ -31,55 +32,74 @@
 </template>
 <script>
 import $ from 'jquery';
-
+import axios from 'axios';
 export default {
   mounted() {
-    let INDEX = 0; 
-    const chatInput = $("#chat-input");
-    const chatLogs = $(".chat-logs");
+    this.INDEX = 0;
+    this.generateMessage(
+      "สวัสดีเจ้าค่ะ 😊 น้องมะเขือแดงยินดีให้บริการค่ะ 🍅🎶 ถามอะไรเกี่ยวกับเพลงมาเลยเจ้าค่ะ น้องมะเขือแดงรู้จักเพลงทุกเพลงบนโลกเลยเจ้าค่ะ 🥰",
+      'user'
+    );
 
-    $("#chat-submit").on("click", function(e) {
+    $("#chat-submit").on("click", (e) => {
       e.preventDefault();
-      const msg = chatInput.val().trim(); 
+      const msg = $("#chat-input").val().trim();
       
-      if(msg) {
-        generateMessage(msg, 'self');
-        chatInput.val(''); // Clear input field
+      if (msg) {
+        this.generateMessage(msg, 'self');
+        $("#chat-input").val('');
         setTimeout(() => {
-          generateMessage("Chatbot response to: " + msg, 'user');
+          this.generateMessage("Chatbot response to: " + msg, 'users');
         }, 1000);
       }
     });
 
-    function generateMessage(msg, type) {
-      INDEX++;
-      const messageHtml = `
-        <div id='cm-msg-${INDEX}' class="chat-msg ${type}">
-          <span class="msg-avatar">
-            <img src="https://image.crisp.im/avatar/operator/196af8cc-f6ad-4ef7-afd1-c45d5231387c/240/?1483361727745">
-          </span>
-          <div class="cm-msg-text">${msg}</div>
-        </div>`;
-      chatLogs.append(messageHtml);
-      $(`#cm-msg-${INDEX}`).hide().fadeIn(300);
-      
-      // Scroll to latest message
-      chatLogs.stop().animate({ scrollTop: chatLogs[0].scrollHeight }, 1000);    
-    }
-
-    $("#chat-circle").on("click", function() {
-      $(this).toggle('scale');
-      $(".chat-box").toggle('scale');
-    });
-
-    $(".chat-box-toggle").on("click", function() {
+    $("#chat-circle").on("click", () => {
       $("#chat-circle").toggle('scale');
       $(".chat-box").toggle('scale');
     });
+
+    $(".chat-box-toggle").on("click", () => {
+      $("#chat-circle").toggle('scale');
+      $(".chat-box").toggle('scale');
+    });
+  },
+  methods: {
+    async geminiApi(userMessage) {
+      try {
+        const response = await axios.post('http://localhost:3000/chat/tomaty', {
+          message: userMessage,
+        }, {
+          headers: { 'Content-Type': 'application/json' }
+        });
+        return response.data.response.candidates[0].content.parts[0].text;
+      } catch (error) {
+        console.error("Error:", error.response ? error.response.data : error.message);
+      }
+    },
+    async generateMessage(msg, type) {
+  this.INDEX++;
+  if (type === 'users') {
+    msg = await this.geminiApi(msg); // ใช้ await เพื่อรอค่า msg ที่เป็นผลลัพธ์จริง
+    type = 'user';
+  }
+  const messageHtml = `
+    <div id='cm-msg-${this.INDEX}' class="chat-msg ${type}">
+      <span class="msg-avatar">
+        <img width="50" height="50" src="https://img.icons8.com/fluency/48/tomato.png" alt="tomato" />
+      </span>
+      <div class="cm-msg-text">${msg}</div>
+    </div>`;
+  $(".chat-logs").append(messageHtml);
+  $(`#cm-msg-${this.INDEX}`).hide().fadeIn(300);
+  
+  // Scroll to the latest message
+  $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);    
+}
+
   }
 };
 </script>
-
 
 <style>
 #center-text {          
@@ -95,12 +115,12 @@ export default {
   position: fixed;
   bottom: 50px;
   right: 50px;
-  background: #5A5EB9;
+  background: #BD1D04;
   width: 80px;
   height: 80px;  
   border-radius: 50%;
   color: white;
-  padding: 28px;
+  padding-top: 15px;
   cursor: pointer;
   box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.6), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
@@ -112,7 +132,7 @@ export default {
     border-radius: 45px;
     padding-right: 40px;
     padding-left: 40px;
-    color: #5865C3;
+    color: #BD1D04;
 }
 
 #chat-overlay {
@@ -146,7 +166,7 @@ export default {
   cursor:pointer;
 }
 .chat-box-header {
-  background: #5A5EB9;
+  background: #BD1D04;
   height:70px;
   border-top-left-radius:5px;
   border-top-right-radius:5px; 
@@ -216,12 +236,15 @@ export default {
   box-shadow:none;
   border:none;
   border-radius:50%;
-  color:#5A5EB9;
+  color:#BD1D04;
   width:35px;
   height:35px;  
 }
 .chat-logs {
-  padding:15px; 
+  padding-left:10px; 
+  padding-top:10px; 
+  padding-bottom:30px; 
+  margin-bottom:3px; 
   height:370px;
   overflow-y:scroll;
 }
@@ -240,7 +263,7 @@ export default {
 
 .chat-logs::-webkit-scrollbar-thumb
 {
-  background-color: #5A5EB9;
+  background-color: #BD1D04;
 }
 
 
@@ -282,7 +305,7 @@ export default {
 .chat-msg.self > .cm-msg-text {  
   float:right;
   margin-right:10px;
-  background: #5A5EB9;
+  background: #BD1D04;
   color:white;
 }
 .cm-msg-button>ul>li {

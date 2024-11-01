@@ -110,7 +110,7 @@ export default {
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #FEFDD3;
+  background-color: #F7eded;
   /* Light background color */
   color: #333;
 }
@@ -188,7 +188,7 @@ body {
   left: 0;
   display: block;
   border-radius: 50px;
-  background: #77D970;
+  background: #a4daa0;
   width: 45px;
   height: 45px;
   transition: all 0.3s ease;
@@ -219,7 +219,7 @@ body {
 
 .cta:hover:before {
   width: 100%;
-  background: #FF4545;
+  background: #ea9c9c;
 }
 
 .cta:hover svg {
