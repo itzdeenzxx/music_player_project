@@ -56,8 +56,7 @@ export default {
             .catch(err => {
                 console.error(err);
             })
-
-
+            
     },
     methods: {
         searchProduct() {
@@ -76,9 +75,7 @@ export default {
 
 <style>
 /* เพิ่มเงาเมื่อเลื่อนเมาส์เหนือการ์ด */
-.chat {
-    position: absolute;
-}
+
 .card:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }

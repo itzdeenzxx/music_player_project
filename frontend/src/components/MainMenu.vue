@@ -31,7 +31,7 @@
           </li>
           <li class="nav-item">
             <router-link to="/cartlist" style="text-decoration: none;">
-              <div class="nav-link text-white fw-bold">Cart</div>
+              <div class="nav-link text-white fw-bold">Favmusic</div>
             </router-link>
           </li>
         </ul>
@@ -70,7 +70,7 @@ export default {
     return {
       memName: null,
       backendmessage: null
-    }
+    } 
   },
   mounted() {
     this.memName = sessionStorage.getItem('memName');
@@ -87,7 +87,7 @@ export default {
       const cf = window.confirm('ต้องการออกจากระบบ?');
       if (cf) {
         try {
-          const response = await axios.get(`http://localhost:3000/members/logout`);
+          const response = await axios.get(`http://localhost:3000/users/logout`);
           this.backendMessage = response.data.messagelogout;
           if (this.backendMessage == 'success') {
             sessionStorage.clear();

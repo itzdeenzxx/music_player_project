@@ -1,8 +1,9 @@
 <template>
+    <div>
     <div class="row ">
         <div class="col-md-6 col-sm-12 ">
-            <h3 class="mt-5 text-end">{{ memEmail }}</h3>
-            <h5 class="text-end">{{ memName }}</h5>
+            <h3 class="mt-5 text-end">Email : {{ memEmail }}</h3>
+            <h5 class="text-end">Username : {{ memName }}</h5>
         </div>
         <div class="col-md-6 col-sm-12 ">
             <div class="card mt-5" style="width: 18rem" v-if="imageExists">
@@ -10,7 +11,7 @@
             :alt="memEmail">
             </div>
             <div class="card mt-5" style="width: 18rem" v-else>
-                <img :src="`http://localhost:3000/img_mem/default.jpg`" :alt="memEmail">
+                <img :src="`http://localhost:3000/img_mem/${memEmail}.jpg`" :alt="memEmail">
             </div>
         </div>
     </div>
@@ -35,6 +36,7 @@
             <div class="col-auto"></div>
         </div>
     </form>
+</div>
 </template>
 
 
@@ -75,7 +77,7 @@ export default {
         // กำหนด endpoint และกำหนด Header ว่าเป็นการส่ง file
         try {
             const response = await axios.post(
-            "http://localhost:3000/members/uploadImg",formData,
+            "http://localhost:3000/users/uploadImg",formData,
             {
                 headers: {
                 "Content-Type": "multipart/form-data",
@@ -91,7 +93,7 @@ export default {
         }
         },
         async chkSession() {
-            await axios.get(`http://localhost:3000/members/getss`)
+            await axios.get(`http://localhost:3000/users/getss`)
                 .then(res => {
                     console.log(res.data)
                     this.memEmail = res.data.email
@@ -105,7 +107,7 @@ export default {
         },
         checkImage() {
             const image = new Image();
-            image.src = `http://localhost:3000/img_mem/${this.memEmail}.jpg`;
+            image.src = `http://localhost:3000/users/${this.memEmail}.jpg`;
             image.onload = () => {
                 // รูปภาพโหลดสำเร็จ
                 this.imageExists = true;

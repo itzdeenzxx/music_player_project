@@ -33,11 +33,22 @@
 <script>
 import $ from 'jquery';
 import axios from 'axios';
+import { EventBus } from "../event-bus";
+
 export default {
+  data(){
+    return {
+      memName: null
+    }
+  },
   mounted() {
+    this.memName = sessionStorage.getItem('memName');
+    EventBus.on('loginok', () => {
+      this.memName = sessionStorage.getItem('memName');
+    });
     this.INDEX = 0;
     this.generateMessage(
-      "สวัสดีเจ้าค่ะ 😊 น้องมะเขือแดงยินดีให้บริการค่ะ 🍅🎶 ถามอะไรเกี่ยวกับเพลงมาเลยเจ้าค่ะ น้องมะเขือแดงรู้จักเพลงทุกเพลงบนโลกเลยเจ้าค่ะ 🥰",
+      "สวัสดี คุณ "+ this.memName +" เจ้าค่ะ 😊 น้องมะเขือแดงยินดีให้บริการค่ะ 🍅🎶 ถามอะไรเกี่ยวกับเพลงมาเลยเจ้าค่ะ น้องมะเขือแดงรู้จักเพลงทุกเพลงบนโลกเลยเจ้าค่ะ 🥰",
       'user'
     );
 
@@ -63,12 +74,14 @@ export default {
       $("#chat-circle").toggle('scale');
       $(".chat-box").toggle('scale');
     });
+  },beforeUnmount() {
+    EventBus.off('loginok');
   },
   methods: {
     async geminiApi(userMessage) {
       try {
         const response = await axios.post('http://localhost:3000/chat/tomaty', {
-          message: userMessage,
+          message: userMessage + "ตอบคำถามให้คนชื่อ" + this.memName,
         }, {
           headers: { 'Content-Type': 'application/json' }
         });
@@ -100,7 +113,7 @@ export default {
   }
 };
 </script>
-
+ 
 <style>
 #center-text {          
   display: flex;

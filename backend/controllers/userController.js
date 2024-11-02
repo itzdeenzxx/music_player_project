@@ -43,19 +43,19 @@ export async function postUser(req, res) {
         const pwdHash = await bcrypt.hash(thePwd, saltround);
         await database.query({
             text: `INSERT INTO Users (user_name, user_hash, user_email, user_dutyId) 
-                   VALUES ($1, $2, $3, $4)`,
+                   VALUES ($1, $2, $3, 1)`,
             values: [
                 req.body.userName, //$1
                 pwdHash,          //$2
                 req.body.userEmail, //$3
-                req.body.userDutyId //$4
+                // req.body.userDutyId //$4
             ]
         });
 
         console.log("OK");
         return res.json({ messageregister: 'success' });
     } catch (err) {
-        console.log("Fail3");
+        console.log("Fail3",err);
         return res.json({ messageregister: 'fail' });
     }
 }

@@ -1,4 +1,4 @@
-# kushop
+# Tomato Music (Project in 3rd year)
 
 ## Project setup
 ```
