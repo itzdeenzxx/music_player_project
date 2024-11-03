@@ -80,6 +80,8 @@ export async function loginUser(req, res) {
 
         const loginOk = await bcrypt.compare(req.body.password, result.rows[0].user_hash);
         if (loginOk) {
+
+            req.session.userId = result.rows[0].user_id;
             req.session.userEmail = result.rows[0].user_email;
             req.session.userName = result.rows[0].user_name;
             req.session.dutyId = result.rows[0].user_dutyId;
@@ -99,6 +101,7 @@ export async function getSession(req, res) {
     console.log(`Get /getSession is requested`);
     console.log(req.session);
     const thedata = {
+        id:req.session.userId,
         email: req.session.userEmail,
         name: req.session.userName,
         duty: req.session.dutyId

@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+    <!-- <WelcomeComponent/> -->
     <MainMenu/>
     <!-- <h1>KUSHOP</h1> -->
     <!-- <router-link to="/">Home<router-link/> &nbsp;
@@ -14,9 +14,6 @@
 
 <script>
 import MainMenu from './components/MainMenu.vue';
-
-
-
 export default {
   name: 'App',
   components:{

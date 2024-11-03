@@ -9,7 +9,7 @@ export async function chkFavorites(req, res) {
 
     try {
         const result = await database.query({
-            text: `SELECT * FROM "User_Favorites" WHERE "user_id" = $1 AND "ms_id" = $2`,
+            text: `SELECT * FROM "user_favorites" WHERE "user_id" = $1 AND "ms_id" = $2`,
             values: [req.session.userId, req.body.musicId]
         })
 
@@ -23,74 +23,106 @@ export async function chkFavorites(req, res) {
     }
 }
 export async function postFavorites(req, res) {
-    console.log(`POST /FAVORITES is requested `)
+    console.log(`POST /FAVORITES is requested `);
     try {
         // Validate Data
-        if (req.body.musicId == null) {
-            return res.json({ favoriteOK: false, messageAddFavorite: 'Music ID is required' })
+        if (!req.body.musicId || !req.body.userId) {
+            return res.json({ 
+                favoriteOK: false, 
+                messageAddFavorite: 'Music ID and User ID are required' 
+            });
         }
 
-        // Insert into User_Favorites
+        // Insert into user_favorites
         const result = await database.query({
-            text: `INSERT INTO "User_Favorites" ("user_id", "ms_id")
+            text: `INSERT INTO "user_favorites" ("user_id", "ms_id")
                    VALUES ($1, $2)`,
-            values: [req.session.userId, req.body.musicId]
-        })
+            values: [req.body.userId, req.body.musicId]
+        });
 
-        return res.json({ favoriteOK: true, messageAddFavorite: "Song added to favorites" })
+        return res.json({ 
+            favoriteOK: true, 
+            messageAddFavorite: "Song added to favorites" 
+        });
     }
     catch (err) {
-        return res.status(500).json({ error: err.message })
+        return res.status(500).json({ error: err.message });
     }
 }
 export async function deleteFavorite(req, res) {
-    console.log(`DELETE /FAVORITES is requested `)
+    const { id: musicId } = req.params;
+    const { userId } = req.query;
+
+    if (!musicId || !userId) {
+        return res.json({ 
+            deleteOK: false, 
+            message: 'Music ID and User ID are required' 
+        });
+    }
+
     try {
-        if (req.body.musicId == null) {
-            return res.json({ deleteOK: false, message: 'Music ID is required' });
-        }
-
         const result = await database.query({
-            text: `DELETE FROM "User_Favorites" WHERE "user_id" = $1 AND "ms_id" = $2`,
-            values: [req.session.userId, req.body.musicId]
-        })
+            text: `DELETE FROM "user_favorites" 
+                   WHERE "user_id" = $1 AND "ms_id" = $2`,
+            values: [userId, musicId]
+        });
 
-        return res.json({ deleteOK: true, message: "Song removed from favorites" });
+        return res.json({ 
+            deleteOK: true, 
+            message: "Song removed from favorites" 
+        });
     }
     catch (err) {
         return res.status(500).json({ error: err.message });
     }
 }
 export async function getFavorites(req, res) {
-    console.log(`GET /FAVORITES is requested`)
+    console.log(`GET /FAVORITES is requested`);
+
+    // ตรวจสอบว่า userId มีค่าหรือไม่
+    if (!req.session.userId) {
+        return res.status(400).json({ error: 'User ID is required.' });
+    }
+
     try {
         const result = await database.query({
-            text: `SELECT ms.* FROM "Musics" ms
-                   JOIN "User_Favorites" uf ON ms.ms_id = uf.ms_id
-                   WHERE uf.user_id = $1`,
+            text: `SELECT * FROM "user_favorites" WHERE user_id = $1`,
             values: [req.session.userId]
-        })
+        });
+
+        // ตรวจสอบว่ามีรายการที่พบหรือไม่
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'No favorites found for this user.' });
+        }
 
         return res.json(result.rows);
-    }
-    catch (err) {
+    } catch (err) {
         return res.status(500).json({ error: err.message });
     }
 }
+
 export async function getFavByUser(req, res) {
-    console.log(`GET Fav By User is Requested`);
+    console.log('GET Favs By User Requested');
+    console.log('Request body:', req.body);
+    
     try {
+        if (!req.body.id) {
+            return res.status(400).json({
+                error: 'User ID is required'
+            });
+        }
+
         const result = await database.query({
-            text: `SELECT ROW_NUMBER() OVER (ORDER BY f."favId" DESC) AS row_number, f.*, SUM(fdt.qty) AS sqty, SUM(fdt.price * fdt.qty) AS sprice
-                   FROM favs f LEFT JOIN "favDtl" fdt ON f."favId" = fdt."favId"
-                   WHERE f."userId" = $1
-                   GROUP BY f."favId"
-                   ORDER BY f."favId" DESC`,
+            text: `SELECT DISTINCT ms_id 
+                   FROM "user_favorites"
+                   WHERE user_id = $1`,
             values: [req.body.id]
         });
-        console.log(`id=${req.params.id} \n` + result.rows[0]);
+
+        console.log('Query result:', result.rows);
         return res.status(200).json(result.rows);
     } catch (err) {
+        console.error('Error in getFavByUser:', err);
         return res.status(500).json({
             error: err.message
         });

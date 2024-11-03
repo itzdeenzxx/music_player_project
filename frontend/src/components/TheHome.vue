@@ -103,6 +103,7 @@ export default {
   name: 'MusicPlayer',
   data() {
     return {
+      memName: null,
       musics: [],
       currentPlayingIndex: -1,
       isPlaying: false,

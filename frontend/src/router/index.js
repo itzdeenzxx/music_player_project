@@ -3,9 +3,10 @@ import TheHome from "../components/TheHome.vue"
 import TheLogin from "../components/TheLogin.vue"
 import TheRegister from "../components/TheRegister.vue"
 import PageMember from "../components/PageMember.vue"
-import ProductShow from "../components/ProductShow.vue"
+import PageMusic from "../components/PageMusic.vue"
 import CartShow from "@/components/CartShow.vue"
-import CartList from "../components/CartList.vue"
+import FavoriteSongs from "../components/FavoriteSongs.vue"
+// import Welcome from "@/components/WelcomeComponent.vue"
 const routes = [
     {
         path:'/pagemember',
@@ -21,26 +22,41 @@ const routes = [
         name:'Login',
         component:TheLogin
     },
-    { 
+    // {
+    //     path:'/welcome',
+    //     name:'Welcome',
+    //     component:Welcome
+    // },
+    {
         path:'/register',
         name:'Register',
         component:TheRegister
     },
-    {
-        path:'/ProductShow/:pd_id',
-        name:'ProductShow',
-        component:ProductShow
-    },
+    // {
+    //     path:'/pagemusic/:ms_name',
+    //     name:'PageMusic',
+    //     component:PageMusic
+    // },
     {
         path: '/CartShow/:cartId', 
         name: 'CartShow',
         component:CartShow
     },
     {
-        path:'/CartList/',
-        name:'CartList',
-        component:CartList
+        path:'/FavoriteSongs/',
+        name:'FavoriteSongs',
+        component:FavoriteSongs
     },
+    {
+        path: '/pagemusic',
+        name: 'PageMusic',
+        component: PageMusic
+      },
+      {
+        path: '/pagemusic/:query',
+        name: 'SearchMusic',
+        component: PageMusic
+      }
 
 ]
 const router = createRouter({
